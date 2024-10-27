@@ -44,7 +44,7 @@
   //   "M response time (ms)": 3943
   // }
 
-  // here's how we can construct a simple mental rotation trial
+  // here's how we can construct a simple reaction time trial
   // TO DO: what else do we need to add to the trial procedure? What other information should we store? How can we turn this into a complete experiment timeline?
   var trial = {
         type: jsPsychHtmlKeyboardResponse,
@@ -52,10 +52,7 @@
         choices: ["z", "m"],
         // store elements from the stimulus item
         data: { 
-          Category: stimulus_item['Category'],
-          Concept: stimulus_item['Concept'],
-          naive_true_false: stimulus_item['T1'],
-          scientific_true_false: stimulus_item['T2']
+          Category: stimulus_item['Category']
         },
         // format the statement a bit using html
         stimulus: "<b><font size=6>"+stimulus_item['Statement']+"</font></b>"
