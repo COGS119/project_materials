@@ -4,7 +4,7 @@
 <head>
   <title>My experiment</title>
   <script src="https://unpkg.com/jspsych@8.0.0"></script>
-  <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@2.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-text@2.0.0"></script>
   <link href="https://unpkg.com/jspsych@8.0.0/css/jspsych.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -26,23 +26,25 @@
   // MAIN TO DO: How can we expand this systematically to encompass all stimuli?
 
   //create an example stimulus
-  // we're using z and m as respons keys here because they are clear left-right response keys that are far apart on the keyboard
+  // what kind of image characteristics might we want to store? (just a placeholder here)
   stimulus_item = {
-    image_name: "stimuli/1-Congruent.jpg",
-    correct_response: "left",
-    correct_response_key: "z",
-    trial_type: "congruent"
+    image_name: "stimuli/1.jpg",
+    image_characteristic: "XXX"
   }
 
-  // here's how we can construct a simple size stroop judgment trial
-  // TO DO: Hm, there's quite a lot of whitespace below the image slide, making the prompt appear far below it. Maybe that could be improved?
+  // here's how we can construct a simple description trial
   // OTHER TO DOs: what else do we need to add to the trial procedure? What other information should we store? How can we turn this into a complete experiment timeline?
   var trial = {
-        type: jsPsychImageKeyboardResponse,
-        prompt: "<p>Press z if the images are the same, m if the images are different.<\p>",
-        choices: ["z", "m"],
-        data: { trial_type: stimulus_item['trial_type'],correct_response: stimulus_item['correct_response'],correct_response_key: stimulus_item['correct_response_key']},
-        stimulus: stimulus_item['image_name']
+        type: jsPsychSurveyText,
+        preamble: "<p>Describe what you see on the screen.<\p>",
+        //check out the plugin to understand how we are using the question parameters below
+        questions: [{prompt: '<img src='+stimulus_item["image_name"]+' style="width:300px;height:300px;">',rows:5, columns:50,name:"image_description", required: true}],
+        data: {image_characteristic: stimulus_item['image_characteristic']},
+        //extracting the text response - this will just make it a little easier when processing the data (because otherwise it is nested)
+        on_finish: function (data) {
+          data.text_response = data.response["image_description"];
+          console.log(data)
+        }
       }
 
   timeline.push(trial);
